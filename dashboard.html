@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Attendance Pro{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <!-- Welcome Header -->
+    <div class="mb-8 fade-in">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-2xl p-8 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl font-bold mb-2">Welcome back, {{ current_user.username }}!</h1>
+                    <p class="text-indigo-100 text-lg">Here's your attendance overview for today</p>
+                </div>
+                <div class="hidden md:block">
+                    <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-4xl text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Today's Attendance Card -->
+    <div class="mb-8 fade-in">
+        <div class="glass-effect rounded-2xl shadow-xl p-6 card-hover">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-calendar-day mr-3 text-indigo-600"></i>
+                    Today's Attendance
+                </h2>
+                <span class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-sm font-semibold">
+                    {{ current_date }}
+                </span>
+            </div>
+            
+            {% if today_attendance %}
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-green-800">Attendance Status</h3>
+                            <div class="status-badge {% if today_attendance.status == 'present' %}status-present{% elif today_attendance.status == 'late' %}status-late{% else %}status-absent{% endif %}">
+                                {{ today_attendance.status.title() }}
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center text-green-700">
+                                <i class="fas fa-sign-in-alt mr-3"></i>
+                                <span class="font-medium">Check-in:</span>
+                                <span class="ml-auto">{{ today_attendance.check_in.strftime('%H:%M:%S') }}</span>
+                            </div>
+                            {% if today_attendance.check_out %}
+                                <div class="flex items-center text-green-700">
+                                    <i class="fas fa-sign-out-alt mr-3"></i>
+                                    <span class="font-medium">Check-out:</span>
+                                    <span class="ml-auto">{{ today_attendance.check_out.strftime('%H:%M:%S') }}</span>
+                                </div>
+                                {% set check_in_minutes = today_attendance.check_in.hour * 60 + today_attendance.check_in.minute %}
+                                {% set check_out_minutes = today_attendance.check_out.hour * 60 + today_attendance.check_out.minute %}
+                                {% set duration = check_out_minutes - check_in_minutes %}
+                                {% set hours = duration // 60 %}
+                                {% set minutes = duration % 60 %}
+                                <div class="flex items-center text-green-700">
+                                    <i class="fas fa-clock mr-3"></i>
+                                    <span class="font-medium">Duration:</span>
+                                    <span class="ml-auto">{{ hours }}h {{ minutes }}m</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-center">
+                        {% if today_attendance.check_out %}
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                                    <i class="fas fa-check text-white text-3xl"></i>
+                                </div>
+                                <p class="text-gray-600 font-medium">Day Complete!</p>
+                                <p class="text-sm text-gray-500 mt-1">Great job today!</p>
+                            </div>
+                        {% else %}
+                            <form method="POST" action="{{ url_for('check_out') }}" class="text-center">
+                                <button type="submit" class="group relative w-full flex justify-center py-4 px-6 border border-transparent text-lg font-medium rounded-lg text-white bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transform transition-all duration-200 hover:scale-105 shadow-lg">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>
+                                    Check Out Now
+                                </button>
+                                <p class="text-sm text-gray-500 mt-2">End your day</p>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <div class="w-32 h-32 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                        <i class="fas fa-clock text-white text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Ready to Start Your Day?</h3>
+                    <p class="text-gray-600 mb-8">Mark your attendance to begin tracking your time</p>
+                    <form method="POST" action="{{ url_for('check_in') }}">
+                        <button type="submit" class="group relative w-full flex justify-center py-4 px-8 border border-transparent text-xl font-medium rounded-lg text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transform transition-all duration-200 hover:scale-105 shadow-xl">
+                            <i class="fas fa-sign-in-alt mr-3"></i>
+                            Check In Now
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Stats and Actions Grid -->
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
+        <!-- Profile Stats -->
+        <div class="glass-effect rounded-2xl shadow-xl p-6 card-hover fade-in">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Profile Info</h3>
+                <i class="fas fa-user-circle text-2xl text-indigo-600"></i>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Role</span>
+                    <span class="font-semibold text-indigo-600">{{ current_user.role.title() }}</span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Email</span>
+                    <span class="font-medium text-gray-800 text-sm">{{ current_user.email }}</span>
+                </div>
+                <div class="flex justify-between items-center py-2">
+                    <span class="text-gray-600">Member Since</span>
+                    <span class="font-medium text-gray-800 text-sm">{{ current_user.created_at.strftime('%b %d, %Y') }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="glass-effect rounded-2xl shadow-xl p-6 card-hover fade-in">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Quick Actions</h3>
+                <i class="fas fa-bolt text-2xl text-yellow-500"></i>
+            </div>
+            <div class="space-y-3">
+                <a href="{{ url_for('attendance_history') }}" class="block w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-lg text-center transition-all duration-200 transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-history mr-2"></i>
+                    View History
+                </a>
+                {% if current_user.role == 'admin' %}
+                    <a href="{{ url_for('admin') }}" class="block w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-medium py-3 px-4 rounded-lg text-center transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-cog mr-2"></i>
+                        Admin Panel
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Today's Summary -->
+        <div class="glass-effect rounded-2xl shadow-xl p-6 card-hover fade-in">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Today's Summary</h3>
+                <i class="fas fa-chart-line text-2xl text-green-500"></i>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center py-2">
+                    <span class="text-gray-600">Status</span>
+                    {% if today_attendance %}
+                        <span class="status-badge {% if today_attendance.status == 'present' %}status-present{% elif today_attendance.status == 'late' %}status-late{% else %}status-absent{% endif %}">
+                            {{ today_attendance.status.title() }}
+                        </span>
+                    {% else %}
+                        <span class="text-gray-400 text-sm">Not checked in</span>
+                    {% endif %}
+                </div>
+                <div class="flex justify-between items-center py-2">
+                    <span class="text-gray-600">Check-in</span>
+                    {% if today_attendance %}
+                        <span class="font-medium text-gray-800">{{ today_attendance.check_in.strftime('%H:%M') }}</span>
+                    {% else %}
+                        <span class="text-gray-400 text-sm">--:--</span>
+                    {% endif %}
+                </div>
+                <div class="flex justify-between items-center py-2">
+                    <span class="text-gray-600">Check-out</span>
+                    {% if today_attendance and today_attendance.check_out %}
+                        <span class="font-medium text-gray-800">{{ today_attendance.check_out.strftime('%H:%M') }}</span>
+                    {% else %}
+                        <span class="text-gray-400 text-sm">--:--</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Activity -->
+    <div class="glass-effect rounded-2xl shadow-xl p-6 card-hover fade-in">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-chart-bar mr-3 text-indigo-600"></i>
+                Recent Activity
+            </h2>
+            <a href="{{ url_for('attendance_history') }}" class="text-indigo-600 hover:text-indigo-800 font-medium text-sm">
+                View All <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        
+        <div class="space-y-3">
+            {% set recent_attendances = current_user.attendances[:5] %}
+            {% for attendance in recent_attendances %}
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-calendar text-indigo-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-800">{{ attendance.date.strftime('%B %d, %Y') }}</p>
+                            <p class="text-sm text-gray-600">{{ attendance.check_in.strftime('%H:%M') }} - {% if attendance.check_out %}{{ attendance.check_out.strftime('%H:%M') }}{% else %}--:--{% endif %}</p>
+                        </div>
+                    </div>
+                    <div class="status-badge {% if attendance.status == 'present' %}status-present{% elif attendance.status == 'late' %}status-late{% else %}status-absent{% endif %}">
+                        {{ attendance.status.title() }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-inbox text-4xl mb-3"></i>
+                    <p>No recent activity found</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

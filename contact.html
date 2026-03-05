@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - My Simple Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="container">
+                <h1>My Website</h1>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <p>Get in touch with us for your next project</p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3>Get in Touch</h3>
+                        <p>We'd love to hear from you! Whether you have a question about our services, want to start a project, or just want to say hello, we're here to help.</p>
+                        
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <h4>📍 Address</h4>
+                                <p>123 Web Street<br>
+                                Tech City, TC 12345<br>
+                                United States</p>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <h4>📞 Phone</h4>
+                                <p>Main: (555) 123-4567<br>
+                                Support: (555) 987-6543</p>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <h4>📧 Email</h4>
+                                <p>General: info@mywebsite.com<br>
+                                Support: support@mywebsite.com</p>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <h4>🕐 Hours</h4>
+                                <p>Monday - Friday: 9:00 AM - 6:00 PM<br>
+                                Saturday: 10:00 AM - 4:00 PM<br>
+                                Sunday: Closed</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-form-section">
+                        <h3>Send us a Message</h3>
+                        <form id="contact-form" class="contact-form">
+                            <div class="form-group">
+                                <label for="name">Your Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Your Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Subject *</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="project">New Project</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Your Message *</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter" name="newsletter">
+                                    <span class="checkmark"></span>
+                                    Subscribe to our newsletter for updates and tips
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="map-section">
+            <div class="container">
+                <h2>Find Us</h2>
+                <div class="map-placeholder">
+                    <div class="map-content">
+                        <h3>📍 Our Location</h3>
+                        <p>Visit our office in the heart of Tech City</p>
+                        <p>We're conveniently located near public transportation and have plenty of parking available.</p>
+                        <button class="directions-btn">Get Directions</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3>How quickly can you start my project?</h3>
+                        <p>Typically, we can start new projects within 1-2 weeks depending on our current workload and project complexity.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>What is your typical project timeline?</h3>
+                        <p>Project timelines vary based on scope. A simple website might take 2-4 weeks, while complex applications can take 2-6 months.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>Do you provide ongoing support?</h3>
+                        <p>Yes! We offer various support packages to ensure your website continues to run smoothly after launch.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>What payment methods do you accept?</h3>
+                        <p>We accept bank transfers, credit cards, and PayPal. Payment terms are typically 50% upfront and 50% on completion.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 My Simple Website. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

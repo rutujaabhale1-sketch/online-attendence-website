@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Attendance System{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Register</h2>
+    
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div class="mb-4">
+            {{ form.username.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.username(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+            {% if form.username.errors %}
+                <div class="text-red-500 text-xs mt-1">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-4">
+            {{ form.email.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.email(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+            {% if form.email.errors %}
+                <div class="text-red-500 text-xs mt-1">
+                    {% for error in form.email.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-4">
+            {{ form.role.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.role(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+            {% if form.role.errors %}
+                <div class="text-red-500 text-xs mt-1">
+                    {% for error in form.role.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-4">
+            {{ form.password.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.password(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+            {% if form.password.errors %}
+                <div class="text-red-500 text-xs mt-1">
+                    {% for error in form.password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-6">
+            {{ form.confirm_password.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.confirm_password(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+            {% if form.confirm_password.errors %}
+                <div class="text-red-500 text-xs mt-1">
+                    {% for error in form.confirm_password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="flex items-center justify-between">
+            {{ form.submit(class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full") }}
+        </div>
+    </form>
+    
+    <div class="text-center mt-4">
+        <p class="text-gray-600">Already have an account? <a href="{{ url_for('login') }}" class="text-blue-600 hover:text-blue-800">Login here</a></p>
+    </div>
+</div>
+{% endblock %}
